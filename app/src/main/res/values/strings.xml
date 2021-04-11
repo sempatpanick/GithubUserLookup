@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Github User Lookup</string>
-    
+
     <string name="detail_user">Detail User</string>
     <string name="tab_followers">FOLLOWERS (%d)</string>
     <string name="tab_following">FOLLOWING (%d)</string>

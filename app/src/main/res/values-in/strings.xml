@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="detail_user">Detail Pengguna</string>
+    <string name="tab_followers">PENGIKUT (%d)</string>
+    <string name="tab_following">MENGIKUTI (%d)</string>
+    <string name="no_data">Tidak ada data..</string>
+    <string name="many_more">dan %d lagi..</string>
+    <string name="input_username">Masukkan username..</string>
+    <string name="account_name">Nama akun</string>
+    <string name="username">Username</string>
+    <string name="company">Perusahaan</string>
+    <string name="location">Lokasi</string>
+    <string name="repository">Repositori</string>
+    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
+    <string name="no_connection">Tidak ada koneksi internet</string>
+    <string name="failed">Gagal : %s</string>
+    <string name="total_users">Total Pengguna : %d</string>
+    <string name="profile_image">Gambar Profil</string>
+</resources>

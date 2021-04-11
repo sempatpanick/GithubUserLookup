@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name" translatable="false">Github User Lookup</string>
+    
+    <string name="detail_user">Detail User</string>
+    <string name="tab_followers">FOLLOWERS (%d)</string>
+    <string name="tab_following">FOLLOWING (%d)</string>
+    <string name="no_data">No data found</string>
+    <string name="many_more">and %d more..</string>
+    <string name="input_username">Input username..</string>
+    <string name="account_name">Account Name</string>
+    <string name="username">Username</string>
+    <string name="company">Company</string>
+    <string name="location">Location</string>
+    <string name="repository">Repository</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="change_language_settings">Change Language Settings</string>
+    <string name="no_connection">No internet connection</string>
+    <string name="failed">Failed : %s</string>
+    <string name="total_users">Total User : %d</string>
+    <string name="github" translatable="false">Github</string>
+</resources>

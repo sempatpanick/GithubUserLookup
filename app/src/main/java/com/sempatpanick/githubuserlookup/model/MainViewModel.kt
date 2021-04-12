@@ -21,7 +21,7 @@ class MainViewModel : ViewModel() {
     /*
         Your Github Access Token
      */
-    private val accessToken = "8568eb0c7c3e06fd76adbe73c316844c4c9380a3"
+    private val accessToken = "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"
 
     companion object {
         var numberOfUser: Int? = 0

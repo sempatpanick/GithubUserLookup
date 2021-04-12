@@ -1,12 +1,11 @@
 package com.sempatpanick.githubuserlookup.fragment
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sempatpanick.githubuserlookup.DetailUserActivity
@@ -53,6 +52,11 @@ class TabFragment : Fragment() {
 
         when (index) {
             1 -> {
+                adapter.setOnItemClickCallback(object : TabAdapter.OnItemClickCallback {
+                    override fun onItemClicked(data: UserSearchItems) {
+                        showSelectedUser(data)
+                    }
+                })
                 context?.let { mainViewModel.userFollowers(it, DetailUserActivity.username.toString()) }
                 mainViewModel.getUserFollowers().observe(viewLifecycleOwner, { userItems ->
                     if (userItems != null) {
@@ -74,6 +78,11 @@ class TabFragment : Fragment() {
                 })
             }
             2 -> {
+                adapter.setOnItemClickCallback(object : TabAdapter.OnItemClickCallback {
+                    override fun onItemClicked(data: UserSearchItems) {
+                        showSelectedUser(data)
+                    }
+                })
                 context?.let { mainViewModel.userFollowing(it, DetailUserActivity.username.toString()) }
                 mainViewModel.getUserFollowing().observe(viewLifecycleOwner, { userItems ->
                     if (userItems != null) {
@@ -105,5 +114,11 @@ class TabFragment : Fragment() {
         } else {
             fragmentTabBinding.progressBar.visibility = View.GONE
         }
+    }
+
+    private fun showSelectedUser(data: UserSearchItems) {
+        val moveIntent = Intent(context, DetailUserActivity::class.java)
+        moveIntent.putExtra(DetailUserActivity.EXTRA_DATA, data)
+        startActivity(moveIntent)
     }
 }

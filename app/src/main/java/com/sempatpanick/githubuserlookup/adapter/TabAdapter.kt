@@ -12,6 +12,15 @@ import com.sempatpanick.githubuserlookup.databinding.ItemUsersBinding
 
 class TabAdapter : RecyclerView.Adapter<TabAdapter.TabViewHolder>() {
     private val mData = ArrayList<UserSearchItems>()
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: UserSearchItems)
+    }
 
     fun setData(items: ArrayList<UserSearchItems>) {
         mData.clear()
@@ -34,11 +43,16 @@ class TabAdapter : RecyclerView.Adapter<TabAdapter.TabViewHolder>() {
         private val binding = ItemUsersBinding.bind(itemView)
 
         fun bind(userSearchItems: UserSearchItems) {
-            binding.tvUsername.text = userSearchItems.username
-            Glide.with(itemView.context)
-                .load(userSearchItems.avatarUrl)
-                .apply(RequestOptions().override(60, 60))
-                .into(binding.imgPhotoProfile)
+            with(itemView) {
+                binding.tvUsername.text = userSearchItems.username
+                Glide.with(itemView.context)
+                    .load(userSearchItems.avatarUrl)
+                    .apply(RequestOptions().override(60, 60))
+                    .into(binding.imgPhotoProfile)
+                setOnClickListener {
+                    onItemClickCallback.onItemClicked(mData[adapterPosition])
+                }
+            }
         }
     }
 }

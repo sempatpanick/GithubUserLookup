@@ -184,18 +184,17 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
             }
             val favorites = deferredNotes.await()
 
-            favorites.forEach loop@{
-                if (it.username == dataIntent.username) {
-                    uriWithId = Uri.parse("${CONTENT_URI}/${it.id}")
+            for (favorite in favorites) {
+                if (favorite.username == dataIntent.username) {
+                    uriWithId = Uri.parse("${CONTENT_URI}/${favorite.id}")
                     isFavorite = true
-                    return@loop
+                    break
                 } else {
                     isFavorite = false
                 }
             }
 
             changeIconFab()
-            Toast.makeText(this@DetailUserActivity, favorites.toString(), Toast.LENGTH_LONG).show()
         }
     }
 

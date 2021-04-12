@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import com.sempatpanick.githubuserlookup.R
+import com.sempatpanick.githubuserlookup.entity.UserDetailItems
+import com.sempatpanick.githubuserlookup.entity.UserSearchItems
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
 import org.json.JSONObject
@@ -21,7 +23,7 @@ class MainViewModel : ViewModel() {
     /*
         Your Github Access Token
      */
-    private val accessToken = "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"
+    private val accessToken = "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"
 
     companion object {
         var numberOfUser: Int? = 0

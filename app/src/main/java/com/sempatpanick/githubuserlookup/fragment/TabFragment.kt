@@ -13,7 +13,7 @@ import com.sempatpanick.githubuserlookup.R
 import com.sempatpanick.githubuserlookup.adapter.TabAdapter
 import com.sempatpanick.githubuserlookup.databinding.FragmentTabBinding
 import com.sempatpanick.githubuserlookup.model.MainViewModel
-import com.sempatpanick.githubuserlookup.model.UserSearchItems
+import com.sempatpanick.githubuserlookup.entity.UserSearchItems
 
 class TabFragment : Fragment() {
     private lateinit var adapter: TabAdapter

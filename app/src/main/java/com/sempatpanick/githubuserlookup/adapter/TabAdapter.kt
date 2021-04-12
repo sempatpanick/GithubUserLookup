@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sempatpanick.githubuserlookup.R
-import com.sempatpanick.githubuserlookup.entity.UserSearchItems
+import com.sempatpanick.githubuserlookup.model.UserSearchItems
 import com.sempatpanick.githubuserlookup.databinding.ItemUsersBinding
 
 class TabAdapter : RecyclerView.Adapter<TabAdapter.TabViewHolder>() {

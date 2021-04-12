@@ -11,12 +11,9 @@
     <string name="company">Perusahaan</string>
     <string name="location">Lokasi</string>
     <string name="repository">Repositori</string>
-    <string name="settings">Pengaturan</string>
+    <string name="change_language_settings">Ubah Pengaturan Bahasa</string>
     <string name="no_connection">Tidak ada koneksi internet</string>
     <string name="failed">Gagal : %s</string>
     <string name="total_users">Total Pengguna : %d</string>
     <string name="profile_image">Gambar Profil</string>
-    <string name="favorite">Favorit</string>
-    <string name="has_added_favorite">%s telah ditambahkan ke Favorit</string>
-    <string name="has_removed_favorite">%s telah dihapus dari Favorit</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.sempatpanick.githubuserlookup.entity
+package com.sempatpanick.githubuserlookup.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

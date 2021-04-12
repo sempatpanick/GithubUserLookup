@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.sempatpanick.githubuserlookup.adapter.UserAdapter
 import com.sempatpanick.githubuserlookup.databinding.ActivityMainBinding
 import com.sempatpanick.githubuserlookup.model.MainViewModel
-import com.sempatpanick.githubuserlookup.model.UserSearchItems
+import com.sempatpanick.githubuserlookup.entity.UserSearchItems
 
 class MainActivity : AppCompatActivity(), View.OnKeyListener {
     private lateinit var adapter: UserAdapter
@@ -68,11 +68,17 @@ class MainActivity : AppCompatActivity(), View.OnKeyListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_change_settings) {
-            val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
-            startActivity(mIntent)
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+                startActivity(mIntent)
+                true
+            }
+            R.id.action_favorite -> {
+                true
+            }
+            else -> true
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun showLoading(state: Boolean) {

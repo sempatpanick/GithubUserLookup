@@ -18,7 +18,6 @@ object DatabaseContract {
             const val FOLLOWERS = "followers"
             const val FOLLOWING = "following"
 
-            // untuk membuat URI content://com.sempatpanick.githubuserlookup/user_favorite
             val CONTENT_URI: Uri = Uri.Builder().scheme(SCHEME)
                     .authority(AUTHORITY)
                     .appendPath(TABLE_NAME)

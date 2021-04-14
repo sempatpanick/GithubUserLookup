@@ -19,4 +19,12 @@
     <string name="favorite">Favorit</string>
     <string name="has_added_favorite">%s telah ditambahkan ke Favorit</string>
     <string name="has_removed_favorite">%s telah dihapus dari Favorit</string>
+    <string name="your_favorite_list">List Favorite Anda</string>
+    <string name="followers_following">%1$d Pengikut | %2$d Mengikuti</string>
+    <string name="change_language_setting">Ubah Pengaturan Bahasa</string>
+    <string name="show_notification_reminder">Tampilkan Notifikasi Pengingat</string>
+    <string name="notification_setting">Pengaturan Notifikasi</string>
+    <string name="language_setting">Pengaturan Bahasa</string>
+    <string name="activated_notification">Notifikasi diaktifkan</string>
+    <string name="deactivated_notification">Notifikasi dinonaktifkan</string>
 </resources>

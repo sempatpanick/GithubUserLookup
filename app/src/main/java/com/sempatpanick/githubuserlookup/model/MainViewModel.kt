@@ -20,10 +20,7 @@ class MainViewModel : ViewModel() {
     private val listFollowers = MutableLiveData<ArrayList<UserSearchItems>>()
     private val listFollowing = MutableLiveData<ArrayList<UserSearchItems>>()
     private val mainUrl = "https://api.github.com/"
-    /*
-        Your Github Access Token
-     */
-    private val accessToken = "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"
+    private val accessToken = "YOUR_ACCESS_TOKEN"
 
     companion object {
         var numberOfUser: Int? = 0
@@ -41,7 +38,6 @@ class MainViewModel : ViewModel() {
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
                 try {
-                    //parsing json
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
                     val list = responseObject.getJSONArray("items")
@@ -64,7 +60,6 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                // Jika koneksi gagal
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode - Bad Request"
                     403 -> "$statusCode - Forbidden"
@@ -88,7 +83,6 @@ class MainViewModel : ViewModel() {
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
                 try {
-                    //parsing json
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
                     val userDetailItems = UserDetailItems()
@@ -110,7 +104,6 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                // Jika koneksi gagal
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode - Bad Request"
                     403 -> "$statusCode - Forbidden"
@@ -134,7 +127,6 @@ class MainViewModel : ViewModel() {
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
                 try {
-                    //parsing json
                     val result = String(responseBody)
                     val list = JSONArray(result)
 
@@ -155,7 +147,6 @@ class MainViewModel : ViewModel() {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                // Jika koneksi gagal
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode - Bad Request"
                     403 -> "$statusCode - Forbidden"
@@ -179,7 +170,6 @@ class MainViewModel : ViewModel() {
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) =
                     try {
-                        //parsing json
                         val result = String(responseBody)
                         val list = JSONArray(result)
 
@@ -198,7 +188,6 @@ class MainViewModel : ViewModel() {
                     }
 
             override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                // Jika koneksi gagal
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode - Bad Request"
                     403 -> "$statusCode - Forbidden"

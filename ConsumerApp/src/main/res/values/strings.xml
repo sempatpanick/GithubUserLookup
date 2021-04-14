@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name" translatable="false">ConsumerApp</string>
+    <string name="no_data">No data found</string>
+    <string name="account_name">Account Name</string>
+    <string name="username">Username</string>
+    <string name="repository">Repository</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="favorite">Favorite</string>
+    <string name="your_favorite_list">Your Favorite List</string>
+    <string name="followers_following">%d Followers | %d Following</string>
+    <string name="followers_and_following_word"><![CDATA[Followers & Following]]></string>
+</resources>

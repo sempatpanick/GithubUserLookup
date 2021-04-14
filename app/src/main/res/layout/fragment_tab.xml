@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.TabFragment">
 
@@ -21,5 +22,6 @@
         android:id="@+id/rv_list_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="1dp" />
+        android:layout_marginTop="1dp"
+        tools:listitem="@layout/item_users" />
 </androidx.constraintlayout.widget.ConstraintLayout>

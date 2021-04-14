@@ -3,7 +3,6 @@ package com.sempatpanick.githubuserlookup.entity
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
 @Parcelize
 data class UserFavoriteItems (
         var id: Int = 0,

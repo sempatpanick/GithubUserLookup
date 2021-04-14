@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_50"
     android:padding="16dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -49,6 +50,7 @@
             android:id="@+id/tv_total_users"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:textSize="18sp"
             android:visibility="gone" />
 
@@ -56,6 +58,7 @@
             android:id="@+id/rv_search_user"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="1dp" />
+            android:layout_marginTop="1dp"
+            tools:listitem="@layout/item_users" />
     </LinearLayout>
 </RelativeLayout>

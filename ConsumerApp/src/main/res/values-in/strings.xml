@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_data">Tidak ada data..</string>
+    <string name="account_name">Nama akun</string>
+    <string name="username">Username</string>
+    <string name="repository">Repositori</string>
+    <string name="profile_image">Gambar Profil</string>
+    <string name="favorite">Favorit</string>
+    <string name="your_favorite_list">List Favorite Anda</string>
+    <string name="followers_following">%1$d Pengikut | %2$d Mengikuti</string>
+    <string name="followers_and_following_word"><![CDATA[Pengikut & Mengikuti]]></string>
+</resources>

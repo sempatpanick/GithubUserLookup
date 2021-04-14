@@ -3,12 +3,15 @@ package com.sempatpanick.githubuserlookup
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -44,6 +47,7 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     private var isFavorite: Boolean = false
 
     companion object {
+        private const val EXTRA_STATE = "EXTRA_STATE"
         const val EXTRA_DATA = "extra_data"
         private val TAB_TITLES = ArrayList<String>()
         var username: String? = null
@@ -108,15 +112,34 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                     TabFragment.FOLLOWERS = dataDetail.followers
                     TabFragment.FOLLOWING = dataDetail.following
                 }
+
                 TAB_TITLES.clear()
                 showTab(dataDetail.followers, dataDetail.following)
-
-                loadDataFavorite()
             })
         } else {
             Toast.makeText(this, getString(R.string.no_connection), Toast.LENGTH_SHORT).show()
             false.showLoading()
         }
+
+        val handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+
+        val myObserver = object : ContentObserver(handler) {
+            override fun onChange(self: Boolean) {
+                loadDataFavorite()
+            }
+        }
+
+        contentResolver.registerContentObserver(CONTENT_URI, true, myObserver)
+
+        if (savedInstanceState == null) {
+            loadDataFavorite()
+        } else {
+            savedInstanceState.getBoolean(EXTRA_STATE)?.also { isFavorite = it }
+            loadDataFavorite()
+        }
+
         binding.fabFavorite.setOnClickListener(this)
     }
 
@@ -128,7 +151,7 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> {
-                val mIntent = Intent(Settings.ACTION_LOCALE_SETTINGS)
+                val mIntent = Intent(this, SettingsActivity::class.java)
                 startActivity(mIntent)
             }
             android.R.id.home -> {
@@ -144,7 +167,6 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                 if (isFavorite) {
                     contentResolver.delete(uriWithId, null, null)
                     isFavorite = false
-                    loadDataFavorite()
                     Toast.makeText(this, resources.getString(R.string.has_removed_favorite, dataIntent.username), Toast.LENGTH_SHORT).show()
                 } else {
                     val values = ContentValues()
@@ -156,11 +178,15 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                     values.put(FOLLOWING, dataDetail.following)
                     contentResolver.insert(CONTENT_URI, values)
                     isFavorite = true
-                    loadDataFavorite()
                     Toast.makeText(this, resources.getString(R.string.has_added_favorite, dataDetail.username), Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(EXTRA_STATE, isFavorite)
     }
 
     private fun showTab(followers: Int?, following: Int?) {
@@ -178,7 +204,6 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     private fun loadDataFavorite() {
         GlobalScope.launch(Dispatchers.Main) {
             val deferredNotes = async(Dispatchers.IO) {
-                // CONTENT_URI = content://com.sempatpanick.githubuserlookup/note
                 val cursor = contentResolver.query(CONTENT_URI, null, null, null, null)
                 MappingHelper.mapCursorToArrayList(cursor)
             }
@@ -231,8 +256,19 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun isConnected() : Boolean {
-        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting == true
+        val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw      = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            return connectivityManager.activeNetworkInfo?.isConnected ?: false
+        }
     }
 }

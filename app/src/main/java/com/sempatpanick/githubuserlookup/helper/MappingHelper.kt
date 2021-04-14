@@ -27,20 +27,4 @@ object MappingHelper {
         }
         return favoriteList
     }
-
-    fun mapCursorToObject(userCursor: Cursor?): UserFavoriteItems {
-        var user = UserFavoriteItems()
-        userCursor?.apply {
-            moveToFirst()
-            val id = getInt(getColumnIndexOrThrow(_ID))
-            val username = getString(getColumnIndexOrThrow(USERNAME))
-            val name = getString(getColumnIndexOrThrow(NAME))
-            val avatarUrl = getString(getColumnIndexOrThrow(AVATAR_URL))
-            val repository = getInt(getColumnIndexOrThrow(REPOSITORY))
-            val followers = getInt(getColumnIndexOrThrow(FOLLOWERS))
-            val following = getInt(getColumnIndexOrThrow(FOLLOWING))
-            user = UserFavoriteItems(id, username, name, avatarUrl, repository, followers, following)
-        }
-        return user
-    }
 }

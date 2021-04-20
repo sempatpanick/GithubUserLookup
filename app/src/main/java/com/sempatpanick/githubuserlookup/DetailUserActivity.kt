@@ -1,13 +1,9 @@
 package com.sempatpanick.githubuserlookup
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
 import android.database.ContentObserver
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -33,19 +29,13 @@ import com.sempatpanick.githubuserlookup.fragment.TabFragment
 import com.sempatpanick.githubuserlookup.model.MainViewModel
 import com.sempatpanick.githubuserlookup.entity.UserSearchItems
 import com.sempatpanick.githubuserlookup.helper.MappingHelper
+import com.sempatpanick.githubuserlookup.utils.ConnectionStatus.Companion.isConnected
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
-    private lateinit var binding: ActivityDetailUserBinding
-    private lateinit var mainViewModel: MainViewModel
-    private lateinit var uriWithId: Uri
-    private var dataDetail: UserDetailItems = UserDetailItems()
-    private var dataIntent: UserSearchItems = UserSearchItems()
-    private var isFavorite: Boolean = false
-
     companion object {
         private const val EXTRA_STATE = "EXTRA_STATE"
         const val EXTRA_DATA = "extra_data"
@@ -53,29 +43,32 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
         var username: String? = null
     }
 
+    private lateinit var binding: ActivityDetailUserBinding
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var uriWithId: Uri
+    private lateinit var dataIntent: UserSearchItems
+    private lateinit var dataDetail: UserDetailItems
+    private var isFavorite: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val actionBar = supportActionBar
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
-            actionBar.setDisplayHomeAsUpEnabled(true)
-        }
-
-        actionBar?.title = resources.getString(R.string.detail_user)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = resources.getString(R.string.detail_user)
 
         mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
-            MainViewModel::class.java)
+            MainViewModel::class.java
+        )
 
         dataIntent = intent.getParcelableExtra<UserSearchItems>(EXTRA_DATA) as UserSearchItems
 
         username = dataIntent.username
         true.showLoading()
 
-        if (isConnected()) {
+        if (isConnected(this)) {
             mainViewModel.userDetail(this, username.toString())
             mainViewModel.getDetailUser().observe(this, { userItems ->
                 if (userItems != null) {
@@ -136,7 +129,7 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
         if (savedInstanceState == null) {
             loadDataFavorite()
         } else {
-            savedInstanceState.getBoolean(EXTRA_STATE)?.also { isFavorite = it }
+            savedInstanceState.getBoolean(EXTRA_STATE).also { isFavorite = it }
             loadDataFavorite()
         }
 
@@ -167,7 +160,11 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                 if (isFavorite) {
                     contentResolver.delete(uriWithId, null, null)
                     isFavorite = false
-                    Toast.makeText(this, resources.getString(R.string.has_removed_favorite, dataIntent.username), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.has_removed_favorite, dataIntent.username),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     val values = ContentValues()
                     values.put(USERNAME, dataDetail.username)
@@ -178,7 +175,11 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
                     values.put(FOLLOWING, dataDetail.following)
                     contentResolver.insert(CONTENT_URI, values)
                     isFavorite = true
-                    Toast.makeText(this, resources.getString(R.string.has_added_favorite, dataDetail.username), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.has_added_favorite, dataDetail.username),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -252,23 +253,6 @@ class DetailUserActivity : AppCompatActivity(), View.OnClickListener {
             binding.fabFavorite.visibility = View.VISIBLE
         } else {
             binding.fabFavorite.visibility = View.GONE
-        }
-    }
-
-    private fun isConnected() : Boolean {
-        val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw      = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-                else -> false
-            }
-        } else {
-            return connectivityManager.activeNetworkInfo?.isConnected ?: false
         }
     }
 }

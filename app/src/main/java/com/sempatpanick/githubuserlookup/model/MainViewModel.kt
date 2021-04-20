@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
+import com.sempatpanick.githubuserlookup.BuildConfig
 import com.sempatpanick.githubuserlookup.R
 import com.sempatpanick.githubuserlookup.entity.UserDetailItems
 import com.sempatpanick.githubuserlookup.entity.UserSearchItems
@@ -20,7 +21,6 @@ class MainViewModel : ViewModel() {
     private val listFollowers = MutableLiveData<ArrayList<UserSearchItems>>()
     private val listFollowing = MutableLiveData<ArrayList<UserSearchItems>>()
     private val mainUrl = "https://api.github.com/"
-    private val accessToken = "YOUR_ACCESS_TOKEN"
 
     companion object {
         var numberOfUser: Int? = 0
@@ -32,7 +32,7 @@ class MainViewModel : ViewModel() {
         val url = "${mainUrl}search/users?q=${username}"
 
         val client = AsyncHttpClient()
-        client.addHeader("Authorization", "token $accessToken")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.setTimeout(50000)
         client.get(url, object : AsyncHttpResponseHandler() {
@@ -45,9 +45,10 @@ class MainViewModel : ViewModel() {
 
                     for (i in 0 until list.length()) {
                         val user = list.getJSONObject(i)
-                        val userSearchItems = UserSearchItems()
-                        userSearchItems.username = user.getString("login")
-                        userSearchItems.avatarUrl = user.getString("avatar_url")
+                        val userSearchItems = UserSearchItems(
+                            user.getString("login"),
+                            user.getString("avatar_url")
+                        )
                         listItems.add(userSearchItems)
                     }
 
@@ -77,7 +78,7 @@ class MainViewModel : ViewModel() {
         val url = "${mainUrl}users/${username}"
 
         val client = AsyncHttpClient()
-        client.addHeader("Authorization", "token $accessToken")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.setTimeout(50000)
         client.get(url, object : AsyncHttpResponseHandler() {
@@ -85,15 +86,16 @@ class MainViewModel : ViewModel() {
                 try {
                     val result = String(responseBody)
                     val responseObject = JSONObject(result)
-                    val userDetailItems = UserDetailItems()
-                    userDetailItems.username = responseObject.getString("login")
-                    userDetailItems.name = responseObject.getString("name")
-                    userDetailItems.avatarUrl = responseObject.getString("avatar_url")
-                    userDetailItems.company = responseObject.getString("company")
-                    userDetailItems.location = responseObject.getString("location")
-                    userDetailItems.repository = responseObject.getInt("public_repos")
-                    userDetailItems.followers = responseObject.getInt("followers")
-                    userDetailItems.following = responseObject.getInt("following")
+                    val userDetailItems = UserDetailItems(
+                        responseObject.getString("login"),
+                        responseObject.getString("name"),
+                        responseObject.getString("avatar_url"),
+                        responseObject.getString("company"),
+                        responseObject.getString("location"),
+                        responseObject.getInt("public_repos"),
+                        responseObject.getInt("followers"),
+                        responseObject.getInt("following")
+                    )
                     dataUser.add(userDetailItems)
                     detailUser.postValue(dataUser)
                 } catch (e: Exception) {
@@ -121,7 +123,7 @@ class MainViewModel : ViewModel() {
         val url = "${mainUrl}users/${username}/followers"
 
         val client = AsyncHttpClient()
-        client.addHeader("Authorization", "token $accessToken")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.setTimeout(50000)
         client.get(url, object : AsyncHttpResponseHandler() {
@@ -132,9 +134,10 @@ class MainViewModel : ViewModel() {
 
                     for (i in 0 until list.length()) {
                         val user = list.getJSONObject(i)
-                        val userSearchItems = UserSearchItems()
-                        userSearchItems.username = user.getString("login")
-                        userSearchItems.avatarUrl = user.getString("avatar_url")
+                        val userSearchItems = UserSearchItems(
+                            user.getString("login"),
+                            user.getString("avatar_url")
+                        )
                         listItems.add(userSearchItems)
                     }
 
@@ -164,7 +167,7 @@ class MainViewModel : ViewModel() {
         val url = "${mainUrl}users/${username}/following"
 
         val client = AsyncHttpClient()
-        client.addHeader("Authorization", "token $accessToken")
+        client.addHeader("Authorization", "token ${BuildConfig.GITHUB_TOKEN}")
         client.addHeader("User-Agent", "request")
         client.setTimeout(50000)
         client.get(url, object : AsyncHttpResponseHandler() {
@@ -175,9 +178,10 @@ class MainViewModel : ViewModel() {
 
                         for (i in 0 until list.length()) {
                             val user = list.getJSONObject(i)
-                            val userSearchItems = UserSearchItems()
-                            userSearchItems.username = user.getString("login")
-                            userSearchItems.avatarUrl = user.getString("avatar_url")
+                            val userSearchItems = UserSearchItems(
+                                user.getString("login"),
+                                user.getString("avatar_url")
+                            )
                             listItems.add(userSearchItems)
                         }
 

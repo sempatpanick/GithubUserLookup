@@ -1,11 +1,12 @@
 package com.sempatpanick.githubuserlookup.entity
 
 import android.os.Parcelable
+import androidx.annotation.NonNull
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserDetailItems (
-        var username: String? = null,
+        @NonNull var username: String,
         var name: String? = null,
         var avatarUrl: String? = null,
         var company: String? = null,

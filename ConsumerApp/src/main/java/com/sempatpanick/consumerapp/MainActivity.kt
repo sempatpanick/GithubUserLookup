@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.setData(favorites)
                 binding.tvNodata.visibility = View.GONE
             } else {
+                adapter.clearData()
                 binding.tvNodata.visibility = View.VISIBLE
             }
         }

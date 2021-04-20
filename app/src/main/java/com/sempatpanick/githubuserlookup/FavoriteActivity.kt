@@ -22,25 +22,21 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class FavoriteActivity : AppCompatActivity() {
-    private lateinit var adapter: FavoriteAdapter
-    private lateinit var binding: ActivityFavoriteBinding
     companion object {
         private const val EXTRA_STATE = "EXTRA_STATE"
     }
+
+    private lateinit var adapter: FavoriteAdapter
+    private lateinit var binding: ActivityFavoriteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val actionBar = supportActionBar
-
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
-            actionBar.setDisplayHomeAsUpEnabled(true)
-        }
-
-        actionBar?.title = resources.getString(R.string.favorite)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = resources.getString(R.string.favorite)
 
         binding.rvListFavorite.layoutManager = LinearLayoutManager(this)
         binding.rvListFavorite.setHasFixedSize(true)
@@ -110,6 +106,7 @@ class FavoriteActivity : AppCompatActivity() {
                 adapter.setData(favorites)
                 binding.tvNodata.visibility = View.GONE
             } else {
+                adapter.clearData()
                 binding.tvNodata.visibility = View.VISIBLE
             }
         }

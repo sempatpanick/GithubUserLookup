@@ -36,6 +36,11 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>
         notifyDataSetChanged()
     }
 
+    fun clearData() {
+        mData.clear()
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         val mView = LayoutInflater.from(parent.context).inflate(R.layout.item_favorite, parent, false)
         return FavoriteViewHolder(mView)
@@ -52,7 +57,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>
 
         fun bind(userFavoriteItems: UserFavoriteItems) {
             with(itemView) {
-                Glide.with(itemView.context)
+                Glide.with(context)
                     .load(userFavoriteItems.avatarUrl)
                     .apply(RequestOptions().override(60, 60))
                     .into(binding.imgPhotoProfile)

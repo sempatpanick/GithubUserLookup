@@ -13,14 +13,14 @@ import com.sempatpanick.githubuserlookup.databinding.ActivitySettingsBinding
 import com.sempatpanick.githubuserlookup.receiver.AlarmReceiver
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingsBinding
-    private lateinit var alarmReceiver: AlarmReceiver
-    private lateinit var sharedPreferences: SharedPreferences
-
     companion object {
         const val PREFS_NAME = "settings"
         private const val SWITCH_NOTIFICATION = "switch_notification"
     }
+
+    private lateinit var binding: ActivitySettingsBinding
+    private lateinit var alarmReceiver: AlarmReceiver
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +28,12 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         alarmReceiver = AlarmReceiver()
-        val actionBar = supportActionBar
 
         sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
-            actionBar.setDisplayHomeAsUpEnabled(true)
-        }
-
-        actionBar?.title = resources.getString(R.string.settings)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = resources.getString(R.string.settings)
 
         binding.swNotificationReminder.isChecked = sharedPreferences.getBoolean(SWITCH_NOTIFICATION, false)
 

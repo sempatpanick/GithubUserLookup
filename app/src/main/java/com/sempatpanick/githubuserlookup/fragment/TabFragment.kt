@@ -16,9 +16,22 @@ import com.sempatpanick.githubuserlookup.model.MainViewModel
 import com.sempatpanick.githubuserlookup.entity.UserSearchItems
 
 class TabFragment : Fragment() {
-    private lateinit var adapter: TabAdapter
     private lateinit var fragmentTabBinding: FragmentTabBinding
     private lateinit var mainViewModel: MainViewModel
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            fragmentTabBinding.progressBar.visibility = View.VISIBLE
+        } else {
+            fragmentTabBinding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showSelectedUser(data: UserSearchItems) {
+        val moveIntent = Intent(context, DetailUserActivity::class.java)
+        moveIntent.putExtra(DetailUserActivity.EXTRA_DATA, data)
+        startActivity(moveIntent)
+    }
 
     companion object {
         private const val ARG_SECTION_NUMBER = "section_number"
@@ -37,8 +50,7 @@ class TabFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle?): View {
         fragmentTabBinding = FragmentTabBinding.inflate(layoutInflater)
 
-        adapter = TabAdapter()
-        adapter.notifyDataSetChanged()
+        val adapter = TabAdapter()
         fragmentTabBinding.rvListUser.layoutManager = LinearLayoutManager(context)
         fragmentTabBinding.rvListUser.setHasFixedSize(true)
         fragmentTabBinding.rvListUser.adapter = adapter
@@ -57,7 +69,7 @@ class TabFragment : Fragment() {
                         showSelectedUser(data)
                     }
                 })
-                context?.let { mainViewModel.userFollowers(it, DetailUserActivity.username.toString()) }
+                context?.let { mainViewModel.userFollowers(it, DetailUserActivity.username) }
                 mainViewModel.getUserFollowers().observe(viewLifecycleOwner, { userItems ->
                     if (userItems != null) {
                         if (FOLLOWERS == 0) {
@@ -106,19 +118,5 @@ class TabFragment : Fragment() {
         }
 
         return fragmentTabBinding.root
-    }
-
-    private fun showLoading(state: Boolean) {
-        if (state) {
-            fragmentTabBinding.progressBar.visibility = View.VISIBLE
-        } else {
-            fragmentTabBinding.progressBar.visibility = View.GONE
-        }
-    }
-
-    private fun showSelectedUser(data: UserSearchItems) {
-        val moveIntent = Intent(context, DetailUserActivity::class.java)
-        moveIntent.putExtra(DetailUserActivity.EXTRA_DATA, data)
-        startActivity(moveIntent)
     }
 }
